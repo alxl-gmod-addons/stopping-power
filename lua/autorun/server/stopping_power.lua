@@ -61,11 +61,13 @@ hook.Add("Tick", "StoppingPowerSpeedup", function()
             local recov = delta * recovAmt
 
             for _, ply in ipairs(player.GetAll()) do
-                ply:ApplyStopPowerSlowdownMult(multMin)
+                if ply:Alive() then
+                    ply:ApplyStopPowerSlowdownMult(multMin)
 
-                local pRecovTick = ply:GetRecoveryTime()
-                if pRecovTick and lastRecovTick >= pRecovTick then
-                    ply:ChangeStopPowerSlowdownMult(recov, multMin)
+                    local pRecovTick = ply:GetRecoveryTime()
+                    if pRecovTick and lastRecovTick >= pRecovTick then
+                        ply:ChangeStopPowerSlowdownMult(recov, multMin)
+                    end
                 end
             end
         end
