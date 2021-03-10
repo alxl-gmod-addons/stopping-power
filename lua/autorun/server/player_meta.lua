@@ -25,7 +25,6 @@ end
 
 function plymeta:ResetStopPowerMult()
     self:SetNWFloat("stoppower_mult", 1.0)
-    self:SetNWFloat("stoppower_mult_prev", 1.0)
 end
 
 function plymeta:SetRecoveryTime(t)

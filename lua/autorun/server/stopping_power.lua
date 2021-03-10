@@ -29,6 +29,7 @@ cvars.AddChangeCallback("stoppower_recovery_speed", function()
 end)
 
 CreateConVar("stoppower_recovery_delay", 0.5, FCVAR_NOTIFY, "The number of seconds before recovery starts.")
+CreateConVar("stoppower_autoreset_type", 1, FCVAR_NOTIFY, "0=no auto-reset, 1=on spawn, 2=on death")
 
 hook.Add("PlayerHurt", "StoppingPowerSlowdown", function(ply, attacker, hpRemain, dmgTaken)
     if enabled then
@@ -38,13 +39,13 @@ hook.Add("PlayerHurt", "StoppingPowerSlowdown", function(ply, attacker, hpRemain
 end)
 
 hook.Add("PostPlayerDeath", "StoppingPowerDeathReset", function(ply)
-    if enabled then
+    if enabled and GetConVar("stoppower_recovery_delay"):GetInt() == 2 then
         resetPlayer(ply)
     end
 end)
 
 hook.Add("PlayerSpawn", "StoppingPowerSpawnReset", function(ply, transition)
-    if enabled then
+    if enabled and GetConVar("stoppower_recovery_delay"):GetInt() == 1 then
         resetPlayer(ply)
     end
 end)
@@ -84,4 +85,28 @@ end
 
 concommand.Add("stoppower_reset_all_players", function(ply, cmd, args)
     resetAllPlayers()
+end)
+
+concommand.Add("stoppower_reset_all_players_slowwalk_to", function(ply, cmd, args)
+    for _, ply in ipairs(player.GetAll()) do
+        ply:SetSlowWalkSpeed(args[1])
+    end
+end)
+
+concommand.Add("stoppower_reset_all_players_walk_to", function(ply, cmd, args)
+    for _, ply in ipairs(player.GetAll()) do
+        ply:SetWalkSpeed(args[1])
+    end
+end)
+
+concommand.Add("stoppower_reset_all_players_run_to", function(ply, cmd, args)
+    for _, ply in ipairs(player.GetAll()) do
+        ply:SetRunSpeed(args[1])
+    end
+end)
+
+concommand.Add("stoppower_reset_all_players_jump_to", function(ply, cmd, args)
+    for _, ply in ipairs(player.GetAll()) do
+        ply:SetJumpPower(args[1])
+    end
 end)
