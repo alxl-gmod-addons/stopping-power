@@ -1,0 +1,13 @@
+{
+    "title": "Stopping Power",
+    "description": "",
+    "type": "servercontent",
+    "tags": [
+        "fun",
+        "realism"
+    ],
+    "ignore": [
+        ".git/*",
+        "README.md"
+    ]
+}
