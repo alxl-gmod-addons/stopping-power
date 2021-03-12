@@ -1,6 +1,6 @@
 print("Stopping Power is installed :)")
 
-CreateConVar("stoppower_enable", 1, FCVAR_NOTIFY, "When 1, taking damage will slow down players. Turn off with 0.", 0, 1)
+CreateConVar("stoppower_enable", 1, FCVAR_ARCHIVE + FCVAR_NOTIFY, "When 1, taking damage will slow down players. Turn off with 0.", 0, 1)
 local enabled = GetConVar("stoppower_enable"):GetBool()
 cvars.AddChangeCallback("stoppower_enable", function()
     enabled = GetConVar("stoppower_enable"):GetBool()
@@ -10,26 +10,26 @@ cvars.AddChangeCallback("stoppower_enable", function()
     end
 end)
 
-CreateConVar("stoppower_dmg_mult", 0.08, FCVAR_NOTIFY, "The slowdown amount per damage taken.")
+CreateConVar("stoppower_dmg_mult", 0.08, FCVAR_ARCHIVE + FCVAR_NOTIFY, "The slowdown amount per damage taken.")
 local dmgMult = GetConVar("stoppower_dmg_mult"):GetFloat()
 cvars.AddChangeCallback("stoppower_dmg_mult", function()
     dmgMult = GetConVar("stoppower_dmg_mult"):GetFloat()
 end)
 
-CreateConVar("stoppower_minimum_speed_mult", 0.1, FCVAR_NOTIFY, "The slowest slowdown amount allowed.")
+CreateConVar("stoppower_minimum_speed_mult", 0.1, FCVAR_ARCHIVE + FCVAR_NOTIFY, "The slowest slowdown amount allowed.")
 local multMin = GetConVar("stoppower_minimum_speed_mult"):GetFloat()
 cvars.AddChangeCallback("stoppower_minimum_speed_mult", function()
     multMin = GetConVar("stoppower_minimum_speed_mult"):GetFloat()
 end)
 
-CreateConVar("stoppower_recovery_speed", 0.75, FCVAR_NOTIFY, "The slowdown recovered every second.")
+CreateConVar("stoppower_recovery_speed", 0.75, FCVAR_ARCHIVE + FCVAR_NOTIFY, "The slowdown recovered every second.")
 local recovAmt = GetConVar("stoppower_recovery_speed"):GetFloat()
 cvars.AddChangeCallback("stoppower_recovery_speed", function()
     recovAmt = GetConVar("stoppower_recovery_speed"):GetFloat()
 end)
 
-CreateConVar("stoppower_recovery_delay", 0.5, FCVAR_NOTIFY, "The number of seconds before recovery starts.")
-CreateConVar("stoppower_autoreset_type", 1, FCVAR_NOTIFY, "0=no auto-reset, 1=on spawn, 2=on death")
+CreateConVar("stoppower_recovery_delay", 0.5, FCVAR_ARCHIVE + FCVAR_NOTIFY, "The number of seconds before recovery starts.")
+CreateConVar("stoppower_autoreset_type", 1, FCVAR_ARCHIVE + FCVAR_NOTIFY, "0=no auto-reset, 1=on spawn, 2=on death")
 
 hook.Add("PlayerHurt", "StoppingPowerSlowdown", function(ply, attacker, hpRemain, dmgTaken)
     if enabled then
@@ -38,14 +38,14 @@ hook.Add("PlayerHurt", "StoppingPowerSlowdown", function(ply, attacker, hpRemain
     end
 end)
 
-hook.Add("PostPlayerDeath", "StoppingPowerDeathReset", function(ply)
-    if enabled and GetConVar("stoppower_recovery_delay"):GetInt() == 2 then
+hook.Add("PlayerSpawn", "StoppingPowerSpawnReset", function(ply, transition)
+    if enabled and GetConVar("stoppower_recovery_delay"):GetInt() == 1 then
         resetPlayer(ply)
     end
 end)
 
-hook.Add("PlayerSpawn", "StoppingPowerSpawnReset", function(ply, transition)
-    if enabled and GetConVar("stoppower_recovery_delay"):GetInt() == 1 then
+hook.Add("PostPlayerDeath", "StoppingPowerDeathReset", function(ply)
+    if enabled and GetConVar("stoppower_recovery_delay"):GetInt() == 2 then
         resetPlayer(ply)
     end
 end)
