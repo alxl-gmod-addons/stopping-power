@@ -1,5 +1,3 @@
-print("Stopping Power is installed :)")
-
 CreateConVar("stoppower_enable", 1, FCVAR_ARCHIVE + FCVAR_NOTIFY,
     "When 1, taking damage will slow down players. Turn off with 0.", 0, 1)
 local enabled = GetConVar("stoppower_enable"):GetBool()
@@ -11,7 +9,7 @@ cvars.AddChangeCallback("stoppower_enable", function()
     end
 end)
 
-CreateConVar("stoppower_dmg_mult", 0.04, FCVAR_ARCHIVE + FCVAR_NOTIFY, "The slowdown amount per damage taken.")
+CreateConVar("stoppower_dmg_mult", 0.05, FCVAR_ARCHIVE + FCVAR_NOTIFY, "The slowdown amount per damage taken.")
 local dmgMult = GetConVar("stoppower_dmg_mult"):GetFloat()
 cvars.AddChangeCallback("stoppower_dmg_mult", function()
     dmgMult = GetConVar("stoppower_dmg_mult"):GetFloat()
@@ -29,7 +27,7 @@ cvars.AddChangeCallback("stoppower_recovery_speed", function()
     recovAmt = GetConVar("stoppower_recovery_speed"):GetFloat()
 end)
 
-CreateConVar("stoppower_recovery_delay", 0.33, FCVAR_ARCHIVE + FCVAR_NOTIFY,
+CreateConVar("stoppower_recovery_delay", 0.5, FCVAR_ARCHIVE + FCVAR_NOTIFY,
     "The number of seconds before recovery starts.")
 CreateConVar("stoppower_autoreset_type", 1, FCVAR_ARCHIVE + FCVAR_NOTIFY, "0=no auto-reset, 1=on spawn, 2=on death")
 
@@ -86,28 +84,4 @@ end
 
 concommand.Add("stoppower_reset_all_players", function(ply, cmd, args)
     resetAllPlayers()
-end)
-
-concommand.Add("stoppower_reset_all_players_slowwalk_to", function(ply, cmd, args)
-    for _, ply in ipairs(player.GetAll()) do
-        ply:SetSlowWalkSpeed(args[1])
-    end
-end)
-
-concommand.Add("stoppower_reset_all_players_walk_to", function(ply, cmd, args)
-    for _, ply in ipairs(player.GetAll()) do
-        ply:SetWalkSpeed(args[1])
-    end
-end)
-
-concommand.Add("stoppower_reset_all_players_run_to", function(ply, cmd, args)
-    for _, ply in ipairs(player.GetAll()) do
-        ply:SetRunSpeed(args[1])
-    end
-end)
-
-concommand.Add("stoppower_reset_all_players_jump_to", function(ply, cmd, args)
-    for _, ply in ipairs(player.GetAll()) do
-        ply:SetJumpPower(args[1])
-    end
 end)
