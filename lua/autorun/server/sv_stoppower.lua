@@ -62,7 +62,7 @@ hook.Add("Tick", "StoppingPowerRecovery", function()
 
             for _, ply in ipairs(player.GetAll()) do
                 if ply:Alive() then
-                    local pRecovTick = ply:GetRecoveryTime()
+                    local pRecovTick = ply:GetStopPowerRecoveryTime()
                     if pRecovTick and lastRecovTick >= pRecovTick then
                         ply:ChangeStopPowerSlowdownMult(recov, multMin)
                     end

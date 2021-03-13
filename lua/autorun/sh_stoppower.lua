@@ -4,7 +4,7 @@ function plymeta:GetStopPowerSlowdownMult()
     return self:GetNWFloat("stoppower_mult", 1.0)
 end
 
-function plymeta:GetRecoveryTime()
+function plymeta:GetStopPowerRecoveryTime()
     return self:GetNWFloat("stoppower_recov_delay")
 end
 
