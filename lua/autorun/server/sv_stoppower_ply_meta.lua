@@ -12,6 +12,6 @@ function plymeta:ChangeStopPowerSlowdownMult(by, minAllowed)
     self:SetStopPowerSlowdownMult(math.min(1.0, math.max(minAllowed, self:GetStopPowerSlowdownMult() + by)))
 end
 
-function plymeta:SetRecoveryTime(t)
+function plymeta:SetStopPowerRecoveryTime(t)
     self:SetNWFloat("stoppower_recov_delay", t)
 end

@@ -34,7 +34,7 @@ CreateConVar("stoppower_autoreset_type", 1, FCVAR_ARCHIVE + FCVAR_NOTIFY, "0=no 
 hook.Add("PlayerHurt", "StoppingPowerSlowdown", function(ply, attacker, hpRemain, dmgTaken)
     if enabled then
         ply:ChangeStopPowerSlowdownMult(-dmgMult * dmgTaken, multMin)
-        ply:SetRecoveryTime(CurTime() + GetConVar("stoppower_recovery_delay"):GetFloat())
+        ply:SetStopPowerRecoveryTime(CurTime() + GetConVar("stoppower_recovery_delay"):GetFloat())
     end
 end)
 
