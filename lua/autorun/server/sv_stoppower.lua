@@ -1,3 +1,13 @@
+local function resetAllPlayers()
+    for _, ply in ipairs(player.GetAll()) do
+        ply:ResetStopPowerMult()
+    end
+end
+
+concommand.Add("stoppower_reset_all_players", function(ply, cmd, args)
+    resetAllPlayers()
+end)
+
 CreateConVar("stoppower_enable", 1, FCVAR_ARCHIVE + FCVAR_NOTIFY,
     "When 1, taking damage will slow down players. Turn off with 0.", 0, 1)
 local enabled = GetConVar("stoppower_enable"):GetBool()
@@ -7,6 +17,12 @@ cvars.AddChangeCallback("stoppower_enable", function()
     if not enabled then
         resetAllPlayers()
     end
+end)
+
+CreateConVar("stoppower_tick_time", 0.05, FCVAR_ARCHIVE, "How frequently slowdown updates.")
+local tickTime = GetConVar("stoppower_tick_time"):GetFloat()
+cvars.AddChangeCallback("stoppower_tick_time", function()
+    tickTime = GetConVar("stoppower_tick_time"):GetFloat()
 end)
 
 CreateConVar("stoppower_dmg_mult", 0.05, FCVAR_ARCHIVE + FCVAR_NOTIFY, "The slowdown amount per damage taken.")
@@ -40,23 +56,22 @@ end)
 
 hook.Add("PostPlayerDeath", "StoppingPowerDeathReset", function(ply)
     if enabled and GetConVar("stoppower_recovery_delay"):GetInt() == 1 then
-        resetPlayer(ply)
+        ply:ResetStopPowerMult()
     end
 end)
 
 hook.Add("PlayerSpawn", "StoppingPowerSpawnReset", function(ply, transition)
     if enabled and GetConVar("stoppower_recovery_delay"):GetInt() == 2 then
-        resetPlayer(ply)
+        ply:ResetStopPowerMult()
     end
 end)
 
 local lastRecovTick = 0.0
-local recovTickDur = 0.05
 hook.Add("Tick", "StoppingPowerRecovery", function()
     if enabled then
         local delta = CurTime() - lastRecovTick
 
-        if delta >= recovTickDur then
+        if delta >= tickTime then
             lastRecovTick = CurTime()
             local recov = delta * recovAmt
 
@@ -70,18 +85,4 @@ hook.Add("Tick", "StoppingPowerRecovery", function()
             end
         end
     end
-end)
-
-function resetPlayer(ply)
-    ply:ResetStopPowerMult()
-end
-
-function resetAllPlayers()
-    for _, ply in ipairs(player.GetAll()) do
-        resetPlayer(ply)
-    end
-end
-
-concommand.Add("stoppower_reset_all_players", function(ply, cmd, args)
-    resetAllPlayers()
 end)

@@ -1,10 +1,10 @@
 {
     "title": "Stopping Power",
     "description": "",
-    "type": "servercontent",
+    "type": "effects",
     "tags": [
-        "fun",
-        "realism"
+        "realism",
+        "roleplay"
     ],
     "ignore": [
         ".git/*",
