@@ -9,7 +9,8 @@ function plymeta:GetStopPowerRecoveryTime()
 end
 
 hook.Add("Move", "StoppingPowerSpeedMult", function(ply, mv)
-    local speed = mv:GetMaxSpeed() * ply:GetStopPowerSlowdownMult()
+    -- Setting speed to 0.0 does nothing at all, so we'll set it
+    local speed = Math.max(0.01, mv:GetMaxClientSpeed() * ply:GetStopPowerSlowdownMult())
     mv:SetMaxSpeed(speed)
     mv:SetMaxClientSpeed(speed)
 end)
